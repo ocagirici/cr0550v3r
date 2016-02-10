@@ -11,35 +11,6 @@ public class Humidty extends DataPoint{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	protected void setMean(double mean) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void setLower(int lower) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void setMedian(int median) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void setUpper(int upper) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void setCount(int count) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	protected int minValue() {

@@ -53,12 +53,12 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
         
         for(Map.Entry<String, List<Double>> entry : airportDataManager.getRequestFrequency().entrySet()) {
         	double frac = (double)entry.getValue().size()/ totalSize;
-        	
+        	freq.put(entry.getKey(), frac);
         	for(Double radius : entry.getValue())
         		if(radius.intValue() > m)
         			m = radius.intValue();
         			
-        	freq.put(entry.getKey(), frac);
+        	
         }
         retval.put("iata_freq", freq);
         
@@ -71,7 +71,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
         	}        	
         }
         retval.put("radius_freq", hist);
-
+        System.out.println(retval + " " + System.currentTimeMillis());
         return gson.toJson(retval);
     }
 
@@ -89,7 +89,6 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("iata") String iata, @PathParam("radius") String radiusString) {
         double radius = radiusString == null || radiusString.trim().isEmpty() ? 0 : Double.valueOf(radiusString);
-        updateRequestFrequency(iata, radius); // to be changed
         List<AtmosphericInformation> retval = new ArrayList<>();
         Airport base = airportDataManager.get(iata);
         retval.add(base.getInfo());
@@ -101,6 +100,8 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
         			if(a.getInfo().isValid())
         				retval.add(a.getInfo());
         }
+        
+        
         return Response.status(Response.Status.OK).entity(retval).build();
     }
 

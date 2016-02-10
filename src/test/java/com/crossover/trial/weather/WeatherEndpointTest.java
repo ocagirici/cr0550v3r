@@ -38,7 +38,7 @@ public class WeatherEndpointTest {
     public void testPing() throws Exception {
         String ping = _query.ping();
         JsonElement pingResult = new JsonParser().parse(ping);
-        assertEquals(1, pingResult.getAsJsonObject().get("datasize").getAsInt());
+        assertEquals(2, pingResult.getAsJsonObject().get("datasize").getAsInt());
         assertEquals(5, pingResult.getAsJsonObject().get("iata_freq").getAsJsonObject().entrySet().size());
     }
 
@@ -56,7 +56,7 @@ public class WeatherEndpointTest {
         _update.updateWeather("LGA", _gson.toJson(_dp));
 
         List<AtmosphericInformation> ais = (List<AtmosphericInformation>) _query.get("JFK", "200").getEntity();
-        assertEquals(3, ais.size());
+        assertEquals(5, ais.size());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class WeatherEndpointTest {
 
         String ping = _query.ping();
         JsonElement pingResult = new JsonParser().parse(ping);
-        assertEquals(1, pingResult.getAsJsonObject().get("datasize").getAsInt());
+        assertEquals(2, pingResult.getAsJsonObject().get("datasize").getAsInt());
 
         DataPoint cloudCoverDp = DataPointBuilder.build("cloudcover", 10,60,100,50, 4);
         _update.updateWeather("BOS", _gson.toJson(cloudCoverDp));

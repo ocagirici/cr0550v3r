@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.crossover.trial.awa.data.DataPoint;
+import com.crossover.trial.awa.exception.ValueOutOfBoundsException;
 import com.crossover.trial.awa.thread.AtmosphericInformation;
 import com.crossover.trial.awa.thread.AtmosphericInformationCreator;
 import com.crossover.trial.awa.thread.AtmosphericInformationUpdater;
@@ -18,10 +19,10 @@ public class Airport {
 	private ArrayList<AtmosphericInformation> infoLog = new ArrayList<>();
 	
 	
-	public Airport(AirportData data) {
+	public Airport(AirportData data) throws ValueOutOfBoundsException {
 		setData(data);
-		info = null;
-		
+		Thread t = new Thread(new AtmosphericInformationCreator(this));
+		t.start();		
 	}
 	
 	public AirportData getData() {
@@ -73,6 +74,10 @@ public class Airport {
 
     	return R * c;
     }
+
+	public void setAtmosphericInformation(AtmosphericInformation info) {
+		this.info = info;
+	}
 	
 
 }

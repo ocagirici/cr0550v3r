@@ -1,11 +1,24 @@
 package com.crossover.trial.awa.data;
 import com.crossover.trial.awa.exception.IncorrectDataPointName;
+import com.crossover.trial.awa.exception.ValueOutOfBoundsException;
 import com.google.gson.InstanceCreator;
 
 public abstract class DataPointBuilder implements InstanceCreator<DataPoint> {
 	
 	private DataPointBuilder () {}
 
+	public static DataPoint[] buildEmptyDataPointSet() throws ValueOutOfBoundsException {
+		Wind wind = new Wind(0, 0, 0, 0, 0);
+		Temperature temperature = new Temperature(-50, -50, -50, -50, 0);
+		Humidty humidity = new Humidty(0, 0, 0, 0, 0);
+		CloudCover cloudCover = new CloudCover(0, 0, 0, 0, 0);
+		Pressure pressure = new Pressure(650, 650, 650, 650, 0);
+		Precipitation precipitation = new Precipitation(0, 0, 0, 0, 0);
+		// temperature, wind, humidty, precipitation, pressure, cloudCover
+		return new DataPoint[]{temperature, wind, humidity, precipitation, pressure, cloudCover};
+		
+	}
+	
 	public static DataPoint build(String type, int lower, int median, int upper, double mean, int count) throws Exception{
 		if(type.compareToIgnoreCase("wind") == 0)
 			return newWind(lower, median, upper, mean, count);

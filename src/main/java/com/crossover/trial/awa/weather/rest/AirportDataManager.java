@@ -12,6 +12,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.crossover.trial.awa.airport.Airport;
 import com.crossover.trial.awa.airport.AirportData;
+import com.crossover.trial.awa.data.DataPoint;
+import com.crossover.trial.awa.exception.ValueOutOfBoundsException;
 import com.crossover.trial.awa.thread.AtmosphericInformation;
 
 public class AirportDataManager {
@@ -22,7 +24,9 @@ public class AirportDataManager {
 	private HashMap<String, Airport> airports = new HashMap<>();
 	private List<AtmosphericInformation> infoLog = new ArrayList<>();
 	private List<AtmosphericInformation> recentInformation = new ArrayList<>();
-	
+	private Map<String, List<Double>> requestFrequency = new HashMap<String, List<Double>>();
+	private Map<RequestType, Long> requests = new HashMap<RequestType, Long>();
+
 	ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	Runnable periodicTask = new Runnable() {
 	    public void run() {
@@ -31,7 +35,6 @@ public class AirportDataManager {
 	    }
 	};
 
-	private Map<String, List<Double>> requestFrequency = new HashMap<String, List<Double>>();
 
 	public AirportDataManager() {
 	}
@@ -41,7 +44,12 @@ public class AirportDataManager {
 	}
 
 	public void addAirport(AirportData ad) {
-		airports.put(ad.getIata(), new Airport(ad));
+		try {
+			airports.put(ad.getIata(), new Airport(ad));
+		} catch (ValueOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void addInfo(AtmosphericInformation info) {
@@ -51,6 +59,7 @@ public class AirportDataManager {
 	
 	public Airport get(String iata) {
 		if(airports.containsKey(iata)) {
+			requests.put(RequestType.GET, System.currentTimeMillis());
 			return airports.get(iata);
 		}
 		else throw new IllegalArgumentException("No such airport");
@@ -82,12 +91,18 @@ public class AirportDataManager {
 			requestFrequency.put(iata, new ArrayList<>());
 		
 		requestFrequency.get(iata).add(radius);
+		addRequest(RequestType.RADIUS, System.currentTimeMillis());
 		
 		
 	}
 
 	public List<AtmosphericInformation> recentInformation() {
 		return recentInformation;
+	}
+
+	public void addRequest(RequestType type, long time) {
+		requests.put(type, time);
+		
 	}
 
 

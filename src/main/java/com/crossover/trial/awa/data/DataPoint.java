@@ -10,7 +10,7 @@ import com.crossover.trial.awa.exception.ValueOutOfBoundsException;
  *
  * @author code test administrator
  */
-public abstract class DataPoint {
+public class DataPoint {
 	
 	protected String type;
     protected double mean = 0.0;
@@ -48,8 +48,8 @@ public abstract class DataPoint {
 
 
     
-    protected abstract int minValue();
-    protected abstract int maxValue();
+    protected int minValue() { return Integer.MAX_VALUE; }
+    protected int maxValue() { return Integer.MIN_VALUE; }
     
     
    
@@ -115,7 +115,7 @@ public abstract class DataPoint {
     /** the total number of measurements */
     
     protected void setCount(int count) throws ValueOutOfBoundsException {
-    	if(count <= 0)
+    	if(count < 0)
     		throw new ValueOutOfBoundsException("Count cannot be negative");
     }
     

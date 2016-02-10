@@ -65,7 +65,7 @@ public class AtmosphericInformation {
     public Humidty getHumidity() {
         return humidty;
     }
-    public void setHumidity(Humidty humidty) {
+    public void setHumidty(Humidty humidty) {
         this.humidty = humidty;
 
     }
@@ -101,24 +101,7 @@ public class AtmosphericInformation {
         this.lastUpdateTime = lastUpdateTime;
     }
     
-    protected void updateDataPoint(DataPoint dp) throws IncorrectDataPointName
-    {
-    	String type = dp.getType();
-      	if(type.compareToIgnoreCase("wind") == 0)
-			setWind((Wind) dp);
-		else if(type.compareToIgnoreCase("temperature") == 0)
-			setTemperature((Temperature) temperature);
-		else if(type.compareToIgnoreCase("humidity") == 0)
-			setHumidity((Humidty) humidty);
-		else if(type.compareToIgnoreCase("pressure") == 0)
-			setPressure((Pressure) pressure);
-		else if(type.compareToIgnoreCase("cloudcover") == 0)
-			setCloudCover((CloudCover) cloudCover);
-		else if(type.compareToIgnoreCase("precipitation") == 0)
-			setPrecipitation((Precipitation) precipitation);
-		else
-			throw new IncorrectDataPointName();
-    }
+    
     
     public boolean isValid() {
     	return getCloudCover() != null 
